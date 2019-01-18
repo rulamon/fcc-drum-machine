@@ -4,6 +4,9 @@ import { Volume } from './volume';
 
 export const Controls = (props) => {
     return(
-        <Screen currentSample={props.currentSample} /> 
+        <div>
+            <Screen currentSample={props.currentSample} />
+            <Volume handleVolumeClick={props.handleVolumeClick} />
+        </div>
     )
 }

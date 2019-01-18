@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/rulamon/fcc-drum-machine#readme",
   "dependencies": {
+    "nes.css": "^1.0.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   },

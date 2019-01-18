@@ -1,18 +1,20 @@
 import React from 'react';
-import { Controls } from './controls.js';
-import { PadCollection } from './pad-collection.js';
+import { Controls } from './controls';
+import { PadContainer } from './pad-container';
 import styles from './styles.scss';
 
+const audiopad = '/src/audio/'
+
 const sampleArr = [
-    {name: "hihat", letter: "Q", src: "https://drive.google.com/uc?export=download&id=1S-32n84FnxzPjkJxMo5idPjinLzn1peI"},
-    {name: "openHihat", letter: "W", src: "https://drive.google.com/uc?export=download&id=1B72HLGhBfyKvOpVcbSBDwo0tLUjdp3Xo"},
-    {name: "cowbell", letter: "E", src: "https://drive.google.com/uc?export=download&id=1LfFy7HvonwzCypkZrN9nDkC3LXx_SDsR"},
-    {name: "snare1", letter: "A", src: "https://drive.google.com/uc?export=download&id=1Pr8f4-oL7etrDd9aWcwNjoWg3HO8iB3u"},
-    {name: "snare2", letter: "S", src: "https://drive.google.com/uc?export=download&id=1rDkMo0gxLGNDQ9kwIEHVfXPXkQrGt4mx"},
-    {name: "clap", letter: "D", src: "https://drive.google.com/uc?export=download&id=1A4TZMjdpb7JDzSGYAK00SLfcyu7PbW4v"},
-    {name: "kick1", letter: "Z", src: "https://drive.google.com/uc?export=download&id=1_hsAlqikDrybbY83Zr5E6mVudjMropvo"}, 
-    {name: "kick2", letter: "X", src: "https://drive.google.com/uc?export=download&id=1AJQ2GeO3ywf_hTLqbE-KDJOsovY1eYs4"},
-    {name: "bass", letter: "C", src: "https://drive.google.com/uc?export=download&id=1HgkSa_gGRyCxets8oWIbjzotNzQFK4Zm"}
+    {name: "hihat", letter: "Q", src: audiopad + "hihat.wav"},
+    {name: "openHihat", letter: "W", src: audiopad + "openHihat.wav"},
+    {name: "cowbell", letter: "E", src: audiopad + "cowbell.wav"},
+    {name: "snare1", letter: "A", src: audiopad + "snare1.wav"},
+    {name: "snare2", letter: "S", src: audiopad + "snare2.wav"},
+    {name: "clap", letter: "D", src: audiopad + "clap.wav"},
+    {name: "kick1", letter: "Z", src: audiopad + "kick1.wav"}, 
+    {name: "kick2", letter: "X", src: audiopad + "kick2.wav"},
+    {name: "bass", letter: "C", src: audiopad + "bass.wav"}
 ]
 export class App extends React.Component {
     constructor(props) {
@@ -20,10 +22,12 @@ export class App extends React.Component {
         this.state = {
             samples: sampleArr,
             currentSample: {},
-            count: 0
+            count: 0,
+            volume: 0.5
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.handleVolumeClick = this.handleVolumeClick.bind(this);
     }
     handleClick(event) {
         const targetKey = event.target.id;
@@ -64,51 +68,61 @@ export class App extends React.Component {
         const targetKey = event.key;
         switch(targetKey) {
             case "q":
-            this.setState({currentSample: this.state.samples[0]});
+            this.setState({currentSample: this.state.samples[0], count: this.state.count + 1});
             break;
             case "w":
-            this.setState({currentSample: this.state.samples[1]});
+            this.setState({currentSample: this.state.samples[1], count: this.state.count + 1});
             break;
             case "e":
-            this.setState({currentSample: this.state.samples[2]});
+            this.setState({currentSample: this.state.samples[2], count: this.state.count + 1});
             break;
             case "a":
-            this.setState({currentSample: this.state.samples[3]});
+            this.setState({currentSample: this.state.samples[3], count: this.state.count + 1});
             break;
             case "s":
-            this.setState({currentSample: this.state.samples[4]});
+            this.setState({currentSample: this.state.samples[4], count: this.state.count + 1});
             break;
             case "d":
-            this.setState({currentSample: this.state.samples[5]});
+            this.setState({currentSample: this.state.samples[5], count: this.state.count + 1});
             break;
             case "z":
-            this.setState({currentSample: this.state.samples[6]});
+            this.setState({currentSample: this.state.samples[6], count: this.state.count + 1});
             break;
             case "x":
-            this.setState({currentSample: this.state.samples[7]});
+            this.setState({currentSample: this.state.samples[7], count: this.state.count + 1});
             break;
             case "c":
-            this.setState({currentSample: this.state.samples[8]});
+            this.setState({currentSample: this.state.samples[8], count: this.state.count + 1});
             break;
             default:
             break;
         }
-        this.setState({count: this.state.count + 1});
     };
-    componentDidUpdate () {
+
+    handleVolumeClick(event) {
+        this.setState({
+            volume: event.target.value
+        })
+    }
+    
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextState.count === this.state.count + 1;
+    }
+    componentDidUpdate (prevProps, prevState) {
+
+        //play corresponding audio, pause and reset first so it replays on early click as well
         const audioElement = document.getElementById(this.state.currentSample.letter);
         audioElement.pause();
+        audioElement.currentTime = 0;
         audioElement.play();
-        console.log(this.state.count)
+        this.state.samples.forEach(element => document.getElementById(element.letter).volume = this.state.volume)
     }  
     render() {
         return(
-            <div onKeyDown={this.handleKeyDown} tabIndex="0" style={{outline: "none"}}>
-                <PadCollection samples={this.state.samples} handleClick={this.handleClick} currentSample={this.state.currentSample} />
-                <Controls currentSample={this.state.currentSample} />
+            <div onKeyDown={this.handleKeyDown} tabIndex="0" style={{outline: "none"}} className="nes-container main-container">
+                <PadContainer samples={this.state.samples} handleClick={this.handleClick} currentSample={this.state.currentSample} />
+                <Controls currentSample={this.state.currentSample} handleVolumeClick={this.handleVolumeClick} />
             </div>
         )
     }
 }
-
-//hoe audio element in andere component triggeren?????
