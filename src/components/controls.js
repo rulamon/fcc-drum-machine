@@ -1,5 +1,9 @@
+import React from 'react';
 import { Screen } from './screen';
 import { Volume } from './volume';
-export class Controls {
-    
+
+export const Controls = (props) => {
+    return(
+        <Screen currentSample={props.currentSample} /> 
+    )
 }
