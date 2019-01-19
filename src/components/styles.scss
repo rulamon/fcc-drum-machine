@@ -2,22 +2,50 @@
 
 .body-container {
     width: 100vw;
+    height: 100vh;
     font-family: 'Press Start 2P', cursive;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .main-container {
-    flex-basis: 80%;
+    width: 800px;
+    height: 350px;
     display: grid;
     grid-template-columns: 60% 40%;
+    grid-column-gap: 15px;
+    // background-color: #333333;
 
     #pad-container {
         display: grid;
-        grid-template-columns: autogit  auto auto;
-        // .drum-pad {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 2px;
+        .drum-pad {
+        }
+    }
+    #controls-container {
+        display: grid;
+        grid-template-rows: auto auto;
 
-        // }
+        #display {
+            display: flex;
+            justify-content: space-between;
+            .nes-bcrikko {
+                align-self: flex-end;
+            }
+            .nes-balloon {
+                align-self: flex-start;
+                // padding: 0.5rem 0.9rem;
+                height: 65%;
+                flex-basis: 60%;
+            }
+        }
+
+        .volume-container {
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr; 
+            grid-gap: 2px;           
+        }
     }
 }
 .slider {

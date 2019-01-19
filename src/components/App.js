@@ -21,7 +21,7 @@ export class App extends React.Component {
         super(props);
         this.state = {
             samples: sampleArr,
-            currentSample: {},
+            currentSample: {name: "Hi!"},
             count: 0,
             volume: 0.5
         };
