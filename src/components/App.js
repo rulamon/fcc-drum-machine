@@ -7,7 +7,7 @@ const audiopad = '/src/audio/'
 
 const sampleArr = [
     {name: "hihat", letter: "Q", src: audiopad + "hihat.wav"},
-    {name: "openHihat", letter: "W", src: audiopad + "openHihat.wav"},
+    {name: "openHH", letter: "W", src: audiopad + "openHihat.wav"},
     {name: "cowbell", letter: "E", src: audiopad + "cowbell.wav"},
     {name: "snare1", letter: "A", src: audiopad + "snare1.wav"},
     {name: "snare2", letter: "S", src: audiopad + "snare2.wav"},
@@ -35,7 +35,7 @@ export class App extends React.Component {
             case "hihat":
             this.setState({currentSample: this.state.samples[0]});
             break;
-            case "openHihat":
+            case "openHH":
             this.setState({currentSample: this.state.samples[1]});
             break;
             case "cowbell":
@@ -110,7 +110,7 @@ export class App extends React.Component {
     }
     componentDidUpdate (prevProps, prevState) {
 
-        //play corresponding audio, pause and reset first so it replays on early click as well
+        //play corresponding audio, pause and reset first so it replays on fast click as well
         const audioElement = document.getElementById(this.state.currentSample.letter);
         audioElement.pause();
         audioElement.currentTime = 0;
@@ -119,7 +119,7 @@ export class App extends React.Component {
     }  
     render() {
         return(
-            <div onKeyDown={this.handleKeyDown} tabIndex="0" style={{outline: "none"}} className="nes-container main-container">
+            <div onKeyDown={this.handleKeyDown} tabIndex="0" style={{outline: "none"}} className="nes-container is-rounded main-container">
                 <PadContainer samples={this.state.samples} handleClick={this.handleClick} currentSample={this.state.currentSample} />
                 <Controls currentSample={this.state.currentSample} handleVolumeClick={this.handleVolumeClick} />
             </div>
