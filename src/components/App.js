@@ -3,19 +3,22 @@ import { Controls } from './controls';
 import { PadContainer } from './pad-container';
 import styles from './styles.scss';
 
-const audiopad = '/src/audio/'
+const audiopath = '/src/audio/'
+
+//array with all samples including name, corresponding keycode for the drum machine and QWERTY letter
 
 const sampleArr = [
-    {name: "hihat", letter: "Q", src: audiopad + "hihat.wav"},
-    {name: "openHH", letter: "W", src: audiopad + "openHihat.wav"},
-    {name: "cowbell", letter: "E", src: audiopad + "cowbell.wav"},
-    {name: "snare1", letter: "A", src: audiopad + "snare1.wav"},
-    {name: "snare2", letter: "S", src: audiopad + "snare2.wav"},
-    {name: "clap", letter: "D", src: audiopad + "clap.wav"},
-    {name: "kick1", letter: "Z", src: audiopad + "kick1.wav"}, 
-    {name: "kick2", letter: "X", src: audiopad + "kick2.wav"},
-    {name: "bass", letter: "C", src: audiopad + "bass.wav"}
+    {name: "hihat", keyCode: 65, letter: "Q", src: audiopath + "hihat.wav"},
+    {name: "openHH", keyCode: 90, letter: "W", src: audiopath + "openHihat.wav"},
+    {name: "cowbell", keyCode: 69, letter: "E", src: audiopath + "cowbell.wav"},
+    {name: "snare1", keyCode: 81, letter: "A", src: audiopath + "snare1.wav"},
+    {name: "snare2", keyCode: 83, letter: "S", src: audiopath + "snare2.wav"},
+    {name: "clap", keyCode: 68, letter: "D", src: audiopath + "clap.wav"},
+    {name: "kick1", keyCode: 87, letter: "Z", src: audiopath + "kick1.wav"}, 
+    {name: "kick2", keyCode: 88, letter: "X", src: audiopath + "kick2.wav"},
+    {name: "bass", keyCode: 67, letter: "C", src: audiopath + "bass.wav"}
 ]
+
 export class App extends React.Component {
     constructor(props) {
         super(props);
@@ -29,9 +32,12 @@ export class App extends React.Component {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleVolumeClick = this.handleVolumeClick.bind(this);
     }
+
+    //handleClick event handler setting currentSample variable to the sample in the array of samples that corresponds to drum-pad's ID
+
     handleClick(event) {
-        const targetKey = event.target.id;
-        switch(targetKey) {
+        const eventKey = event.target.id;
+        switch(eventKey) {
             case "hihat":
             this.setState({currentSample: this.state.samples[0]});
             break;
@@ -64,40 +70,47 @@ export class App extends React.Component {
         }
         this.setState({count: this.state.count + 1});
     };
+
+    //keyDown event handler based on keycodes for functionality on non QWERTY keyboards, setting currentSample to the sample corresponding to the button with ID == key
+    // counter used to avoid rerendering on pressing other keys
+
     handleKeyDown(event) {
-        const targetKey = event.key;
-        switch(targetKey) {
-            case "q":
+        const eventKey = event.keyCode;
+        const  stateKeycode = (index) => this.state.samples[index].keyCode;
+        switch(eventKey) {
+            case stateKeycode(0):
             this.setState({currentSample: this.state.samples[0], count: this.state.count + 1});
             break;
-            case "w":
+            case stateKeycode(1):
             this.setState({currentSample: this.state.samples[1], count: this.state.count + 1});
             break;
-            case "e":
+            case stateKeycode(2):
             this.setState({currentSample: this.state.samples[2], count: this.state.count + 1});
             break;
-            case "a":
+            case stateKeycode(3):
             this.setState({currentSample: this.state.samples[3], count: this.state.count + 1});
             break;
-            case "s":
+            case stateKeycode(4):
             this.setState({currentSample: this.state.samples[4], count: this.state.count + 1});
             break;
-            case "d":
+            case stateKeycode(5):
             this.setState({currentSample: this.state.samples[5], count: this.state.count + 1});
             break;
-            case "z":
+            case stateKeycode(6):
             this.setState({currentSample: this.state.samples[6], count: this.state.count + 1});
             break;
-            case "x":
+            case stateKeycode(7):
             this.setState({currentSample: this.state.samples[7], count: this.state.count + 1});
             break;
-            case "c":
+            case stateKeycode(8):
             this.setState({currentSample: this.state.samples[8], count: this.state.count + 1});
             break;
             default:
             break;
         }
     };
+
+    // click handler to set volume in state to value in button
 
     handleVolumeClick(event) {
         this.setState({
@@ -111,6 +124,7 @@ export class App extends React.Component {
     componentDidUpdate (prevProps, prevState) {
 
         //play corresponding audio, pause and reset first so it replays on fast click as well
+        
         const audioElement = document.getElementById(this.state.currentSample.letter);
         audioElement.pause();
         audioElement.currentTime = 0;
@@ -119,9 +133,11 @@ export class App extends React.Component {
     }  
     render() {
         return(
-            <div onKeyDown={this.handleKeyDown} tabIndex="0" style={{outline: "none"}} className="nes-container is-rounded main-container">
-                <PadContainer samples={this.state.samples} handleClick={this.handleClick} currentSample={this.state.currentSample} />
-                <Controls currentSample={this.state.currentSample} handleVolumeClick={this.handleVolumeClick} />
+            <div tabIndex="0" className="body-container"onKeyDown={this.handleKeyDown}>
+                <div tabIndex="0" style={{outline: "none"}} className="nes-container is-rounded main-container" id="drum-machine">
+                    <PadContainer samples={this.state.samples} handleClick={this.handleClick} currentSample={this.state.currentSample} />
+                    <Controls currentSample={this.state.currentSample} handleVolumeClick={this.handleVolumeClick} />
+                </div>
             </div>
         )
     }

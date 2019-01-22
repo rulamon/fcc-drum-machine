@@ -5,12 +5,15 @@ $button-color: #0000FF;
 $text-color: #FFFFFF;
 
 .body-container {
+    margin: 0;
+    padding: 0;
     width: 100vw;
     height: 100vh;
     font-family: 'Press Start 2P', cursive;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     background-image: url("/src/images/pixelgrass.jpg");
 }
 
@@ -22,13 +25,13 @@ $text-color: #FFFFFF;
     grid-column-gap: 5px;
     background-color: $main-back-color;
     z-index: 1;
-.main-container {
+    margin: auto;
     padding-left: 0rem;
     padding-right: 1.5rem;
-}
+
     #pad-container {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
         grid-gap: 2px;
     }
     #controls-container {
@@ -65,4 +68,75 @@ $text-color: #FFFFFF;
 .nes-btn {
     color: $text-color;
     background-color: $button-color;
+}
+
+@media only screen and (max-width: 860px) {
+    .main-container{
+        font-size: 13px;
+        width: 650px;
+         #controls-container{ 
+             grid-row-gap: 2px;
+             #display{ 
+                justify-content: center; 
+                .nes-balloon{
+                    flex-basis: 50%;
+                    height: 50%;
+                    padding: 0.8rem 0;
+                    margin-left: 1rem;
+                }
+            }
+        }
+    }
+}
+@media only screen and (max-width: 700px) and (orientation: portrait){
+    .main-container {
+        font-size: 13px;
+        max-width: 450px;
+        padding: 0.8rem !important;
+        height: auto;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas: 
+        "pad-container"
+        "controls-container";
+
+        #pad-container {
+            grid-area: pad-container;
+            grid-template-rows: repeat (3, 60px)
+        }
+        #controls-container {
+            grid-area: controls-container;
+            #display .nes-balloon {
+                align-self: flex-start;
+                height: 50%;
+                flex-basis: 40%;
+            }
+        }
+    }
+}
+@media only screen and (max-width: 700px) and (orientation: landscape){
+    .main-container{
+        font-size: 12px;
+        padding: 0.6rem 0.5rem !important;
+        margin: 0 !important;
+        width: 600px;
+        height: 300px;
+        .nes-balloon {
+            padding: 0.8rem 0 !important;
+        }
+    }
+}
+@media only screen and (max-width: 620px) and (orientation: landscape){
+    .main-container{
+        width: 550px;
+    }
+}
+@media only screen and (max-width: 470px) {
+    .main-container{
+        font-size: 12px;
+        width: 310px;
+        height: 300px !important;
+        padding: 0.5rem !important;
+        margin: 0 !important;
+    }
 }
