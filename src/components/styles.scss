@@ -4,9 +4,13 @@ $main-back-color: #0000BC;
 $button-color: #0000FF;
 $text-color: #FFFFFF;
 
-.body-container {
+#root {
     margin: 0;
     padding: 0;
+    width: 100vw;
+    height: 100vh;
+}
+.body-container {
     width: 100vw;
     height: 100vh;
     font-family: 'Press Start 2P', cursive;
@@ -135,7 +139,6 @@ $text-color: #FFFFFF;
     .main-container{
         font-size: 12px;
         width: 310px;
-        height: 300px !important;
         padding: 0.5rem !important;
         margin: 0 !important;
     }
