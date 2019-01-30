@@ -7,7 +7,6 @@ import styles from './styles.scss';
 export class App extends React.Component {
     constructor(props) {
         super(props);
-        debugger
         this.state = {
             samples: sampleArr,
             currentSample: {name: "Hi!"},
